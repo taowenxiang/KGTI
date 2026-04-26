@@ -24,13 +24,13 @@ export default function HomePage() {
           <h1 className="text-4xl md:text-6xl font-extrabold text-gray-900 mb-4 tracking-tight leading-tight">
             <span className="text-primary-700">KGTI</span>
             <br />
-            测出你的字母人格代码，
+            测出你在港科广的
             <br />
-            以及那个人尽皆知的校园人设
+            专属校园人设
           </h1>
           <p className="text-lg md:text-xl text-gray-600 max-w-3xl mx-auto mb-10">
-            从四维字母光谱出发，把你落在“<span className="font-semibold text-gray-900">DDL战神 / 卷心菜 / 深夜哲人 / 无相之神</span>”
-            这样的强记忆点人格上。你不只是一个代码，更是一种港科广生活方式。
+            从四维字母光谱出发，打开“<span className="font-semibold text-gray-900">DDL战神 / 卷心菜 / 深夜哲人 / 人机</span>”
+            这样有趣的人格。你不只是一个代码，更是一种港科广生活方式。
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
             {templates[0] ? (
@@ -54,7 +54,7 @@ export default function HomePage() {
           </div>
 
           <div className="mt-10 flex flex-wrap justify-center gap-3 text-sm text-gray-600">
-            {['ISPA · DDL战神', 'INPH · 卷心菜', 'INPA · 深夜哲人', 'ENPA · 无相之神'].map((item) => (
+            {['ISPA · DDL战神', 'INPH · 卷心菜', 'INPA · 深夜哲人', 'ISJA · 人机'].map((item) => (
               <div key={item} className="rounded-full border border-white bg-white/80 px-4 py-2 shadow-sm">
                 {item}
               </div>
@@ -78,7 +78,7 @@ export default function HomePage() {
                 <Shapes className="w-6 h-6" />
               </div>
               <h3 className="font-bold text-gray-800 mb-2">强记忆点人设</h3>
-              <p className="text-sm text-gray-500">不是冷冰冰的代码，而是能让你一眼记住、愿意截图传播的校园人格名</p>
+              <p className="text-sm text-gray-500">不是冷冰冰的代码，而是能让你一眼记住的港科广校园人格名</p>
             </div>
             <div className="text-center p-6 rounded-2xl bg-gray-50">
               <div className="w-12 h-12 bg-green-100 text-green-600 rounded-xl flex items-center justify-center mx-auto mb-4">
