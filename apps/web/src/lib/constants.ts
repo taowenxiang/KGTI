@@ -1,4 +1,4 @@
-export const APP_NAME = 'PersonaQuest';
+export const APP_NAME = 'KGTI';
 export const APP_SLOGAN = '发现真实的自己';
 
 export const ROUTES = {
