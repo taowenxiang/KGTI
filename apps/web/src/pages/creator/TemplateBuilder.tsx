@@ -157,7 +157,7 @@ export default function TemplateBuilder() {
             { left: 'E', right: 'I', leftLabel: '社交电源', rightLabel: '独行电池', color: '#f59e0b' },
             { left: 'S', right: 'N', leftLabel: '细节侦探', rightLabel: '脑洞建筑师', color: '#3b82f6' },
             { left: 'J', right: 'P', leftLabel: '计划仙人', rightLabel: 'DDL战神', color: '#10b981' },
-            { left: 'A', right: 'H', leftLabel: 'AI原生派', rightLabel: '古法科研派', color: '#8b5cf6' },
+            { left: 'A', right: 'H', leftLabel: 'AI 原生派', rightLabel: '古法科研派', color: '#8b5cf6' },
           ],
         },
       };

@@ -54,15 +54,15 @@ export default function PersonalityDetailPage() {
     N: { name: '脑洞建筑师', icon: <Lightbulb className="w-4 h-4" />, opposite: '细节侦探' },
     J: { name: '计划仙人', icon: <Compass className="w-4 h-4" />, opposite: 'DDL战神' },
     P: { name: 'DDL战神', icon: <Zap className="w-4 h-4" />, opposite: '计划仙人' },
-    A: { name: 'AI原生派', icon: <Sparkles className="w-4 h-4" />, opposite: '古法科研派' },
-    H: { name: '古法科研派', icon: <BookOpen className="w-4 h-4" />, opposite: 'AI原生派' },
+    A: { name: 'AI 原生派', icon: <Sparkles className="w-4 h-4" />, opposite: '古法科研派' },
+    H: { name: '古法科研派', icon: <BookOpen className="w-4 h-4" />, opposite: 'AI 原生派' },
   };
 
   const dims = [
     { code: personality.id[0], label: '充电模式' },
     { code: personality.id[1], label: '脑回路模式' },
     { code: personality.id[2], label: '执行节奏' },
-    { code: personality.id[3], label: 'AI协作模式' },
+    { code: personality.id[3], label: 'AI 协作模式' },
   ];
 
   return (

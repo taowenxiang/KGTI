@@ -80,7 +80,7 @@ export default function ResultPage() {
     { left: 'E', leftLabel: '社交电源', right: 'I', rightLabel: '独行电池', color: '#f59e0b' },
     { left: 'S', leftLabel: '细节侦探', right: 'N', rightLabel: '脑洞建筑师', color: '#3b82f6' },
     { left: 'J', leftLabel: '计划仙人', right: 'P', rightLabel: 'DDL战神', color: '#10b981' },
-    { left: 'A', leftLabel: 'AI原生派', right: 'H', rightLabel: '古法科研派', color: '#8b5cf6' },
+    { left: 'A', leftLabel: 'AI 原生派', right: 'H', rightLabel: '古法科研派', color: '#8b5cf6' },
   ];
 
   return (
