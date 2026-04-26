@@ -41,8 +41,7 @@ export default defineConfig(({ mode }) => {
       },
     },
     build: {
-      outDir: path.resolve(__dirname, '../../dist/web'),
-      emptyOutDir: true,
+      outDir: 'dist',
     },
   };
 });

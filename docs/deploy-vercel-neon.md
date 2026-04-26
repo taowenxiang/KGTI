@@ -234,7 +234,16 @@ VITE_APP_BASE_PATH=/kgti/
 
 这里的 `VITE_APP_BASE_PATH=/kgti/` 很重要，它决定前端会按子路径模式构建。
 
-### 7.4 构建结果检查
+### 7.4 Build / Output 设置
+
+这里保持最简单的默认值就行：
+
+- Build Command：`npm run build`
+- Output Directory：`dist`
+
+不要填 `../../dist/web`，因为 Vercel 会按 `apps/web` 这个 Root Directory 去找输出目录。
+
+### 7.5 构建结果检查
 
 部署完成后，先直接打开你的前端 Vercel 域名：
 
