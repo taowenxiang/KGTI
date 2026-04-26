@@ -1,0 +1,28 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "redirects": [
+    {
+      "source": "/",
+      "destination": "/kgti",
+      "permanent": false
+    }
+  ],
+  "rewrites": [
+    {
+      "source": "/kgti/assets/:path*",
+      "destination": "/assets/:path*"
+    },
+    {
+      "source": "/kgti/images/:path*",
+      "destination": "/images/:path*"
+    },
+    {
+      "source": "/kgti",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/kgti/:path*",
+      "destination": "/index.html"
+    }
+  ]
+}

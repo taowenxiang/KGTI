@@ -2,7 +2,7 @@ import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import { prisma } from '../utils/prisma.js';
 import { JWT_CONFIG } from '../config/auth.js';
-import type { RegisterInput, LoginInput } from '../../shared/types.js';
+import type { RegisterInput, LoginInput } from '../../../../packages/shared/src/types.js';
 
 const SALT_ROUNDS = 10;
 

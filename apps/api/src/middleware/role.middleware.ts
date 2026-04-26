@@ -1,5 +1,5 @@
 import type { Request, Response, NextFunction } from 'express';
-import type { Role } from '../../shared/types.js';
+import type { Role } from '../../../../packages/shared/src/types.js';
 
 export function requireRole(...roles: Role[]) {
   return (req: Request, res: Response, next: NextFunction) => {

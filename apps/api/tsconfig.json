@@ -1,0 +1,13 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "lib": ["ES2020"],
+    "jsx": "preserve",
+    "esModuleInterop": true,
+    "allowImportingTsExtensions": false,
+    "noEmit": true
+  },
+  "include": ["src", "api", "../../packages/shared/src"]
+}

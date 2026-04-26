@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react';
 import type { Personality } from '@shared/types';
 import { cn } from '../../lib/utils';
+import { toAppAssetPath } from '../../lib/assets';
 import PixelAvatar from './PixelAvatar';
 
 type VisualVariant = 'hero' | 'card' | 'share';
@@ -24,7 +25,7 @@ export default function PersonalityVisual({
 
   const imageSrc = useMemo(() => {
     if (variant === 'share' && personality.shareImageFallback) {
-      return personality.shareImageFallback;
+      return toAppAssetPath(personality.shareImageFallback);
     }
 
     if (!personality.heroImage) {
@@ -32,10 +33,10 @@ export default function PersonalityVisual({
     }
 
     if (variant === 'card') {
-      return personality.heroImage.replace('/hero.png', '/card.png');
+      return toAppAssetPath(personality.heroImage.replace('/hero.png', '/card.png'));
     }
 
-    return personality.heroImage;
+    return toAppAssetPath(personality.heroImage);
   }, [personality.heroImage, personality.shareImageFallback, variant]);
 
   const showImage = imageSrc && !failed;

@@ -1,5 +1,5 @@
 {
-  "extends": "./tsconfig.json",
+  "extends": "./tsconfig.base.json",
   "compilerOptions": {
     "outDir": "./dist/server",
     "rootDir": ".",
@@ -11,6 +11,6 @@
     "lib": ["ES2020"],
     "esModuleInterop": true
   },
-  "include": ["src/server", "src/shared"],
-  "exclude": ["src/client"]
+  "include": ["apps/api/src", "apps/api/api", "packages/shared/src"],
+  "exclude": ["apps/web"]
 }
