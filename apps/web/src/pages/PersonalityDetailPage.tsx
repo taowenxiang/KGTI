@@ -81,7 +81,11 @@ export default function PersonalityDetailPage() {
         {/* 主卡片 */}
         <div className="bg-white rounded-3xl border border-gray-100 p-6 md:p-10 shadow-sm">
           <div className="flex flex-col items-center text-center">
-            <PersonalityVisual personality={personality} className="mb-6 h-56 w-full rounded-3xl" />
+            <PersonalityVisual
+              personality={personality}
+              className="mb-6 w-full aspect-[4/3] rounded-3xl"
+              imageClassName="object-contain"
+            />
 
             <div className="inline-flex items-center gap-1.5 text-sm text-gray-500 mb-2">
               <Sparkles className="w-4 h-4" />
