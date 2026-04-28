@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import { prisma } from '../utils/prisma.js';
+import { getPersonalityAudienceStats } from '../utils/personalityStats.js';
 import { authMiddleware } from '../middleware/auth.middleware.js';
 import { requireRole } from '../middleware/role.middleware.js';
 
@@ -76,6 +77,11 @@ router.get('/personalities', async (_req, res) => {
       pixelArt: p.pixelArt ? JSON.parse(p.pixelArt) : null,
     })),
   });
+});
+
+router.get('/stats/personalities', async (_req, res) => {
+  const { stats } = await getPersonalityAudienceStats();
+  res.json({ success: true, data: stats });
 });
 
 export default router;

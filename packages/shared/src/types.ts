@@ -126,6 +126,25 @@ export interface ApiResponse<T = unknown> {
   error?: string;
 }
 
+export interface PersonalityAudienceStat {
+  id: string;
+  name: string;
+  color: string;
+  registeredCount: number;
+  registeredPercentage: number;
+  participantCount: number;
+  participantPercentage: number;
+}
+
+export interface PersonalityStatsOverview {
+  totalUsers: number;
+  totalRegisteredParticipants: number;
+  totalParticipants: number;
+  totalResults: number;
+  totalPersonalities: number;
+  totalQuestions: number;
+}
+
 export interface LoginInput {
   email: string;
   password: string;

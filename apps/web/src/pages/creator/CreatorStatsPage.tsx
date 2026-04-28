@@ -1,22 +1,15 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { api } from '../../lib/api';
+import type { PersonalityAudienceStat } from '@shared/types';
 import { ArrowLeft, BarChart3, Users } from 'lucide-react';
 
-interface PersonalityStat {
-  id: string;
-  name: string;
-  color: string;
-  count: number;
-  percentage: number;
-}
-
 export default function CreatorStatsPage() {
-  const [stats, setStats] = useState<PersonalityStat[]>([]);
+  const [stats, setStats] = useState<PersonalityAudienceStat[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    api.get<PersonalityStat[]>('/admin/stats/personalities')
+    api.get<PersonalityAudienceStat[]>('/creator/stats/personalities')
       .then((res) => {
         setStats(res);
         setLoading(false);
@@ -42,7 +35,7 @@ export default function CreatorStatsPage() {
           </div>
           <div>
             <h1 className="text-2xl font-bold text-gray-900">人格分布</h1>
-            <p className="text-sm text-gray-500">查看平台上各人格类型的测试占比</p>
+            <p className="text-sm text-gray-500">查看平台上各人格类型在注册用户和全部使用者中的人数分布</p>
           </div>
         </div>
 
@@ -58,29 +51,53 @@ export default function CreatorStatsPage() {
             <div className="space-y-5">
               {stats.map((p) => (
                 <div key={p.id}>
-                  <div className="flex items-center justify-between text-sm mb-1.5">
+                  <div className="flex items-center justify-between gap-4 text-sm mb-2">
                     <span className="font-medium text-gray-700">
                       {p.name} <span className="text-gray-400 text-xs">({p.id})</span>
                     </span>
-                    <span className="text-gray-500 text-xs">
-                      {p.count} 次 · {p.percentage}%
-                    </span>
+                    <div className="text-right text-xs text-gray-500">
+                      <div>全部使用者 {p.participantCount} 人 · {p.participantPercentage}%</div>
+                      <div>注册用户 {p.registeredCount} 人 · {p.registeredPercentage}%</div>
+                    </div>
                   </div>
-                  <div className="h-3 bg-gray-100 rounded-full overflow-hidden">
-                    <div
-                      className="h-full rounded-full transition-all duration-500"
-                      style={{
-                        width: `${Math.max(p.percentage, 1)}%`,
-                        backgroundColor: p.color,
-                      }}
-                    />
+                  <div className="space-y-2">
+                    <div>
+                      <div className="flex items-center justify-between text-[11px] text-gray-400 mb-1">
+                        <span>全部使用者</span>
+                        <span>{p.participantCount} 人</span>
+                      </div>
+                      <div className="h-3 bg-gray-100 rounded-full overflow-hidden">
+                        <div
+                          className="h-full rounded-full transition-all duration-500"
+                          style={{
+                            width: p.participantCount > 0 ? `${Math.max(p.participantPercentage, 1)}%` : '0%',
+                            backgroundColor: p.color,
+                          }}
+                        />
+                      </div>
+                    </div>
+                    <div className="rounded-xl border border-gray-100 px-3 py-2">
+                      <div className="flex items-center justify-between text-[11px] text-gray-400 mb-1">
+                        <span>注册用户</span>
+                        <span>{p.registeredCount} 人</span>
+                      </div>
+                      <div className="h-2.5 bg-gray-100 rounded-full overflow-hidden">
+                        <div
+                          className="h-full rounded-full transition-all duration-500 opacity-75"
+                          style={{
+                            width: p.registeredCount > 0 ? `${Math.max(p.registeredPercentage, 1)}%` : '0%',
+                            backgroundColor: p.color,
+                          }}
+                        />
+                      </div>
+                    </div>
                   </div>
                 </div>
               ))}
             </div>
 
             <div className="mt-6 pt-6 border-t border-gray-100 text-xs text-gray-400 text-center">
-              数据基于全平台已完成的测试统计
+              每位使用者只按最新一次测试结果计入统计
             </div>
           </div>
         )}

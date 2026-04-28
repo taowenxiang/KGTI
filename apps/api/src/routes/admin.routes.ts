@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import { prisma } from '../utils/prisma.js';
+import { getPersonalityAudienceStats, getPersonalityStatsOverview } from '../utils/personalityStats.js';
 import { authMiddleware } from '../middleware/auth.middleware.js';
 import { requireRole } from '../middleware/role.middleware.js';
 
@@ -220,47 +221,16 @@ router.delete('/personalities/:id', async (req, res) => {
 
 // 数据统计：概览
 router.get('/stats/overview', async (_req, res) => {
-  const [totalUsers, totalResults, totalPersonalities, totalQuestions] = await Promise.all([
-    prisma.user.count(),
-    prisma.testResult.count(),
-    prisma.personality.count({ where: { status: 'APPROVED' } }),
-    prisma.question.count({ where: { status: 'APPROVED' } }),
-  ]);
-
   res.json({
     success: true,
-    data: { totalUsers, totalResults, totalPersonalities, totalQuestions },
+    data: await getPersonalityStatsOverview(),
   });
 });
 
-// 数据统计：各人格占比
+// 数据统计：各人格人数分布
 router.get('/stats/personalities', async (_req, res) => {
-  const results = await prisma.testResult.groupBy({
-    by: ['personalityId'],
-    _count: { personalityId: true },
-  });
-
-  const total = results.reduce((sum, r) => sum + r._count.personalityId, 0);
-
-  const personalities = await prisma.personality.findMany({
-    where: { status: 'APPROVED' },
-    select: { id: true, name: true, color: true },
-  });
-
-  const data = personalities.map((p) => {
-    const stat = results.find((r) => r.personalityId === p.id);
-    const count = stat ? stat._count.personalityId : 0;
-    return {
-      ...p,
-      count,
-      percentage: total > 0 ? Number(((count / total) * 100).toFixed(1)) : 0,
-    };
-  });
-
-  // 按占比降序
-  data.sort((a, b) => b.count - a.count);
-
-  res.json({ success: true, data });
+  const { stats } = await getPersonalityAudienceStats();
+  res.json({ success: true, data: stats });
 });
 
 // 数据统计：各题选项分布

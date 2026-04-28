@@ -1,22 +1,8 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { api } from '../../lib/api';
+import type { PersonalityAudienceStat, PersonalityStatsOverview } from '@shared/types';
 import { ArrowLeft, BarChart3, Users, Brain, BookOpen, ChevronDown, ChevronUp } from 'lucide-react';
-
-interface OverviewStats {
-  totalUsers: number;
-  totalResults: number;
-  totalPersonalities: number;
-  totalQuestions: number;
-}
-
-interface PersonalityStat {
-  id: string;
-  name: string;
-  color: string;
-  count: number;
-  percentage: number;
-}
 
 interface QuestionStat {
   id: string;
@@ -26,16 +12,16 @@ interface QuestionStat {
 }
 
 export default function AdminStatsPage() {
-  const [overview, setOverview] = useState<OverviewStats | null>(null);
-  const [personalityStats, setPersonalityStats] = useState<PersonalityStat[]>([]);
+  const [overview, setOverview] = useState<PersonalityStatsOverview | null>(null);
+  const [personalityStats, setPersonalityStats] = useState<PersonalityAudienceStat[]>([]);
   const [questionStats, setQuestionStats] = useState<QuestionStat[]>([]);
   const [loading, setLoading] = useState(true);
   const [expandedQuestion, setExpandedQuestion] = useState<string | null>(null);
 
   useEffect(() => {
     Promise.all([
-      api.get<OverviewStats>('/admin/stats/overview'),
-      api.get<PersonalityStat[]>('/admin/stats/personalities'),
+      api.get<PersonalityStatsOverview>('/admin/stats/overview'),
+      api.get<PersonalityAudienceStat[]>('/admin/stats/personalities'),
       api.get<QuestionStat[]>('/admin/stats/questions'),
     ])
       .then(([o, p, q]) => {
@@ -73,16 +59,18 @@ export default function AdminStatsPage() {
           </div>
           <div>
             <h1 className="text-2xl font-bold text-gray-900">数据统计</h1>
-            <p className="text-sm text-gray-500">平台运营数据一览</p>
+            <p className="text-sm text-gray-500">平台运营数据一览，人数统计按去重后的最新结果计算</p>
           </div>
         </div>
 
         {/* 概览卡片 */}
         {overview && (
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+          <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-4 mb-8">
             {[
               { label: '注册用户', value: overview.totalUsers, icon: Users, color: 'text-blue-600 bg-blue-50' },
-              { label: '测试次数', value: overview.totalResults, icon: Brain, color: 'text-purple-600 bg-purple-50' },
+              { label: '注册作答用户', value: overview.totalRegisteredParticipants, icon: Users, color: 'text-cyan-600 bg-cyan-50' },
+              { label: '全部使用者', value: overview.totalParticipants, icon: Brain, color: 'text-purple-600 bg-purple-50' },
+              { label: '测试次数', value: overview.totalResults, icon: Brain, color: 'text-fuchsia-600 bg-fuchsia-50' },
               { label: '人格类型', value: overview.totalPersonalities, icon: BarChart3, color: 'text-green-600 bg-green-50' },
               { label: '题目总数', value: overview.totalQuestions, icon: BookOpen, color: 'text-orange-600 bg-orange-50' },
             ].map((card) => (
@@ -97,34 +85,61 @@ export default function AdminStatsPage() {
           </div>
         )}
 
-        {/* 人格占比 */}
+        {/* 人格人数分布 */}
         <div className="bg-white rounded-2xl border border-gray-100 p-6 mb-8">
           <h2 className="font-bold text-gray-800 mb-4 flex items-center gap-2">
             <BarChart3 className="w-5 h-5" />
-            人格类型分布
+            人格人数分布
           </h2>
+          <p className="text-xs text-gray-400 mb-4">每位使用者只按最新一次测试结果计入，分别展示注册用户与全体使用者两种口径。</p>
           {personalityStats.length === 0 ? (
             <p className="text-sm text-gray-400 py-4 text-center">暂无数据</p>
           ) : (
             <div className="space-y-4">
               {personalityStats.map((p) => (
                 <div key={p.id}>
-                  <div className="flex items-center justify-between text-sm mb-1.5">
+                  <div className="flex items-center justify-between gap-4 text-sm mb-2">
                     <span className="font-medium text-gray-700">
                       {p.name} <span className="text-gray-400 text-xs">({p.id})</span>
                     </span>
-                    <span className="text-gray-500 text-xs">
-                      {p.count} 次 · {p.percentage}%
-                    </span>
+                    <div className="text-right text-xs text-gray-500">
+                      <div>全部使用者 {p.participantCount} 人 · {p.participantPercentage}%</div>
+                      <div>注册用户 {p.registeredCount} 人 · {p.registeredPercentage}%</div>
+                    </div>
                   </div>
-                  <div className="h-3 bg-gray-100 rounded-full overflow-hidden">
+                  <div className="space-y-2">
+                    <div>
+                      <div className="flex items-center justify-between text-[11px] text-gray-400 mb-1">
+                        <span>全部使用者</span>
+                        <span>{p.participantCount} 人</span>
+                      </div>
+                      <div className="h-3 bg-gray-100 rounded-full overflow-hidden">
+                        <div
+                          className="h-full rounded-full transition-all duration-500"
+                          style={{
+                            width: p.participantCount > 0 ? `${Math.max(p.participantPercentage, 1)}%` : '0%',
+                            backgroundColor: p.color,
+                          }}
+                        />
+                      </div>
+                    </div>
                     <div
-                      className="h-full rounded-full transition-all duration-500"
-                      style={{
-                        width: `${Math.max(p.percentage, 1)}%`,
-                        backgroundColor: p.color,
-                      }}
-                    />
+                      className="rounded-xl border border-gray-100 px-3 py-2"
+                    >
+                      <div className="flex items-center justify-between text-[11px] text-gray-400 mb-1">
+                        <span>注册用户</span>
+                        <span>{p.registeredCount} 人</span>
+                      </div>
+                      <div className="h-2.5 bg-gray-100 rounded-full overflow-hidden">
+                        <div
+                          className="h-full rounded-full transition-all duration-500 opacity-75"
+                          style={{
+                            width: p.registeredCount > 0 ? `${Math.max(p.registeredPercentage, 1)}%` : '0%',
+                            backgroundColor: p.color,
+                          }}
+                        />
+                      </div>
+                    </div>
                   </div>
                 </div>
               ))}
